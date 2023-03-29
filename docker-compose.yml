@@ -1,0 +1,72 @@
+version: "3"
+
+networks:
+  d.net:
+    driver: bridge
+
+services:
+
+###########
+# service php / apache utilisant le vhost par défaut
+#
+#  le service sera accessible à https://docketu.iutnc.univ-lorraine.fr:19145
+###########
+  backend_api:
+    image: canals/php:latest
+    environment:
+     - VHOST_HOSTNAME=docketu.iutnc.univ-lorraine.fr
+     - VHOST_DOCROOT=/var/www/html
+    ports:
+     - "19185:80"
+     - "19145:443"
+    volumes:
+     - ./Backend_API/public:/var/www/html
+     - ./Backend_API/:/var/www
+    working_dir: /var/www
+    networks:
+     - d.net
+    links:
+     - mysql:db
+
+###############
+#  service apache pour la webapp front
+#  service accessible sur http://docketu.iutnc.univ-lorraine.fr:19285
+###############
+
+  webfront:
+    image: httpd:latest
+    ports:
+      - "19285:80"
+    volumes:
+      - ./front/public:/usr/local/apache2/htdocs
+    working_dir: /usr/local/apache2/htdocs
+    networks:
+      - d.net
+    depends_on:
+      -mysql
+
+
+#############################
+# mysql + phpmyadmin
+#############################
+  mysql:
+    image: mariadb:latest
+    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8 --collation-server=utf8_general_ci
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_USER=atelier2
+      - MYSQL_PASSWORD=atelier2
+      - MYSQL_DATABASE=atelier2
+    volumes :
+      - ./Backend_API/sql:/var/www/sql
+    networks:
+      - d.net
+
+  myadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    ports:
+      - "19785:80"
+    links:
+      - mysql:db
+    networks:
+      - d.net
