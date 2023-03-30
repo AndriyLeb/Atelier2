@@ -19,9 +19,8 @@ class UserService {
     public static function registerUser(string $firstname, string $lastname, string $email, string $password): ?array
     {
         $existingUser = User::where('email', '=', $email)->first();
-        if ($existingUser !== null) {
+        if ($existingUser !== null)
             return null;
-        }
 
         $user = new User();
         $user->firstname = $firstname;

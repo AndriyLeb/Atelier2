@@ -17,6 +17,12 @@ use reunionou\actions\GetCommentsByEventIdAction;
 use reunionou\actions\RegisterUserAction;
 use reunionou\actions\LoginUserAction;
 use reunionou\actions\AddCommentAction;
+use reunionou\actions\InviteParticipantAction;
+use reunionou\actions\UpdateParticipantStatusAction;
+use reunionou\actions\DeleteEventAction;
+use reunionou\actions\CreateEventAction;
+use reunionou\actions\GetCreatedEventsByUserIdAction;
+use reunionou\actions\GetEventsUserIdAction;
 
 $db = new DB();
 $db->addConnection([
@@ -47,12 +53,13 @@ $app->get('/user/{id}', GetUserAction::class); //
 $app->post('/event', CreateEventAction::class);
 $app->get('/event/{id}', GetEventAction::class);//
 $app->get('/events', GetEventsAction::class);//
-$app->put('/event/{id}', UpdateEventAction::class);
-$app->delete('/event/{id}', DeleteEventAction::class);
-$app->post('/event/{id}/invite', InviteParticipantAction::class);
+$app->delete('/event/{id}', DeleteEventAction::class);//
+$app->post('/event/{id}/invite', InviteParticipantAction::class);//
 $app->get('/event/{id}/participants', GetEventParticipantsAction::class);//
-$app->put('/participant/{id}/status', UpdateParticipantStatusAction::class);
+$app->put('/participant/{id}/status', UpdateParticipantStatusAction::class);//
 $app->post('/event/{id}/comment', AddCommentAction::class);//
 $app->get('/event/{id}/comments', GetCommentsByEventIdAction::class);//
+$app->get('/user/{id}/events', GetEventsUserIdAction::class);//
+$app->get('/user/{id}/events/created', GetCreatedEventsByUserIdAction::class);//
 
 $app->run();

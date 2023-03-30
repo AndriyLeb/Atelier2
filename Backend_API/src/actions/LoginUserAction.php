@@ -32,6 +32,8 @@ final class LoginUserAction
             'iat' => time(),
             'exp' => time() + (2000 * 2000),
             'user_id' => $user['id'],
+            'firstname' => $user['firstname'],
+            'lastname' => $user['lastname'],
         ];
 
         $header = [

@@ -16,7 +16,6 @@ final class GetEventsAction
             'events' => $events
         ];
 
-        // Create a JSON response
         $response = $response->withHeader('Content-Type', 'application/json');
         $response->getBody()->write(json_encode($data));
 

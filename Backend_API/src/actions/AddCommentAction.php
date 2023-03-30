@@ -17,7 +17,6 @@ final class addCommentAction
 
         $token = $request->getHeaderLine('Authorization');
         $token = str_replace('Bearer ', '', $token);
-        var_dump($token);
 
         try {
             $decoded = JWT::decode($token, new Key('63DDF4E66BEC66FAA5B66D87989B6', 'HS256'));
