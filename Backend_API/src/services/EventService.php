@@ -72,8 +72,6 @@ class EventService {
             $event = new Event();
             $event->title = $eventData['title'];
             $event->description = $eventData['description'];
-            $event->latitude = $eventData['latitude'];
-            $event->longitude = $eventData['longitude'];
             $event->street = $eventData['street'];
             $event->zipcode = $eventData['zipcode'];
             $event->city = $eventData['city'];

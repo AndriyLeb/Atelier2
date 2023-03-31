@@ -11,7 +11,6 @@ use DI\Container;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 
-use Tuupola\Middleware\CorsMiddleware;
 
 use reunionou\actions\GetUserAction;
 use reunionou\actions\GetEventParticipantsAction;
@@ -48,17 +47,32 @@ $db->bootEloquent();
 
 $app = AppFactory::create();
 
-$app->add(function ($request, $handler) {
-    $response = $handler->handle($request);
-    return $response
-        ->withHeader('Access-Control-Allow-Origin', 'http://localhost:5173')
-        ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-        ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+$app->options('/{routes:.+}', function ($request, $response, $args) {
+    return $response;
 });
 
-header('Access-Control-Allow-Origin: *');
-header('Content-Type: application/json; charset=utf-8');
-header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+
+$app->add(function ($request, $handler) {
+    $response = $handler->handle($request);
+
+    if ($request->getMethod() === "OPTIONS") {
+        $response = $response
+        ->withHeader('Access-Control-Allow-Origin', "*")
+        ->withHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH,OPTIONS')
+        ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+        ->withHeader('Access-Control-Max-Age', 3600)
+        ->withHeader('Access-Control-Allow-Credentials', 'true');
+    } else {
+        $response = $response
+        ->withHeader('Access-Control-Allow-Origin', "*")
+        ->withHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH,OPTIONS')
+        ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+        ->withHeader('Access-Control-Max-Age', 3600)
+        ->withHeader('Access-Control-Allow-Credentials', 'true');
+    }
+
+    return $response;
+});
 
 $app->addRoutingMiddleware();
 $app->addBodyParsingMiddleware();

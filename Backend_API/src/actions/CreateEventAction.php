@@ -32,8 +32,6 @@ final class CreateEventAction
             'organizer_id' => $user_id,
             'title' => $requestData['title'],
             'description' => $requestData['description'] ?? null,
-            'latitude' => $requestData['latitude'] ?? null,
-            'longitude' => $requestData['longitude'] ?? null,
             'street' => $requestData['street'],
             'zipcode' => $requestData['zipcode'],
             'city' => $requestData['city']
