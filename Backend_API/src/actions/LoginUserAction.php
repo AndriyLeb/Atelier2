@@ -44,7 +44,6 @@ final class LoginUserAction
         
         $jwt = JWT::encode($payload, '63DDF4E66BEC66FAA5B66D87989B6', 'HS256', null, $header);
         
-        var_dump($jwt);
 
         $responseData = [
             'token' => $jwt,
