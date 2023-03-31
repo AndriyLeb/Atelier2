@@ -77,6 +77,7 @@ $app->addRoutingMiddleware();
 $app->addBodyParsingMiddleware();
 $errorMiddleware = $app->addErrorMiddleware(true, false, false);
 
+
 $app->post('/register', RegisterUserAction::class);
 $app->post('/login', LoginUserAction::class);
 $app->get('/user/{id}', GetUserAction::class); 
