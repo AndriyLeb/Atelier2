@@ -80,4 +80,13 @@ class EventService {
     
             return $event->toArray();
     }
+
+    public static function getOrganizerIdByEventId(int $eventId): ?int
+    {
+        $event = Event::select('organizer_id')
+                    ->where('id', '=', $eventId)
+                    ->first();
+
+        return $event ? $event->organizer_id : null;
+    }
 }
